@@ -11,7 +11,7 @@
       @close="handleClose"
     />
 
-    <div class="flex-1">
+    <div class="flex-1 bg-gray-50 dark:bg-gray-900">
       <SetupCard
         :app-name="t('app.defaultAppName')"
         theme-color="oklch(0.716 0.191 2.477)"

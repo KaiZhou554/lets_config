@@ -19,14 +19,16 @@
       <div class="h-full relative overflow-hidden">
         <Sidebar :sidebar-open="appStore.sidebarOpen" />
 
-        <!-- Page content area -->
+        <!-- Page content area with Naive UI scrollbar -->
         <div
           :class="[
-            'h-full overflow-y-auto transition-all duration-300',
+            'h-full transition-all duration-300 bg-gray-50 dark:bg-gray-900 rounded-tl-xl',
             appStore.sidebarOpen ? 'ml-48' : 'ml-12',
           ]"
         >
-          <router-view />
+          <n-scrollbar>
+            <router-view />
+          </n-scrollbar>
         </div>
       </div>
     </div>
@@ -36,6 +38,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { NScrollbar } from 'naive-ui'
 import {
   WindowMinimise,
   WindowMaximise,

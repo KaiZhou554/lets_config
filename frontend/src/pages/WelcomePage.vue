@@ -13,8 +13,7 @@
 
     <div class="flex-1 bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
       <div
-        class="w-full max-w-lg bg-white dark:bg-gray-800 rounded-xl shadow-lg p-10 text-center
-               ring-1 ring-black/5 dark:ring-white/10"
+        class="w-full max-w-lg p-10 text-center"
       >
         <!-- App icon / logo -->
         <img

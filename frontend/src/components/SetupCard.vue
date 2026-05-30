@@ -1,12 +1,12 @@
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4"
+  <div class="flex items-center justify-center p-4"
     :style="{ '--theme-color': themeColor }">
     <div
-      class="select-none w-full max-w-3xl h-[85vh] bg-white dark:bg-gray-800 rounded-xl shadow-lg relative overflow-hidden">
+      class="select-none w-full max-w-3xl h-[85vh] rounded-xl relative overflow-hidden">
       <!-- 置顶固定栏 -->
       <div
         class="absolute top-0 left-0 right-0 h-18 px-6 z-10 flex justify-between items-center
-        pointer-events-none bg-linear-to-b from-white via-white to-transparent dark:from-gray-800 dark:via-gray-800 dark:to-transparent">
+        pointer-events-none bg-linear-to-b from-gray-50 via-gray-50 to-transparent dark:from-gray-900 dark:via-gray-900 dark:to-transparent">
         <h1 class="text-xl font-medium text-gray-800 dark:text-gray-100">{{ t('setup.continueSetup') }}</h1>
         <button
           @click="$emit('finish')"
@@ -39,7 +39,7 @@
       </n-scrollbar>
       <div
         class="absolute bottom-0 left-0 right-0 h-6 z-10
-        pointer-events-none bg-linear-to-t from-white via-white to-transparent dark:from-gray-800 dark:via-gray-800 dark:to-transparent">
+        pointer-events-none bg-linear-to-t from-gray-50 via-gray-50 to-transparent dark:from-gray-900 dark:via-gray-900 dark:to-transparent">
       </div>
     </div>
   </div>
