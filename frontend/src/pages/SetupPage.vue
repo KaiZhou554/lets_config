@@ -15,6 +15,7 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import SetupCard from '@/components/SetupCard.vue'
@@ -31,4 +32,15 @@ function handleFinish() {
   appStore.completeOnboarding()
   router.push('/main/home')
 }
+
+// ── Ctrl+Enter keyboard shortcut ──
+function onKeydown(e: KeyboardEvent) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+    e.preventDefault()
+    handleFinish()
+  }
+}
+
+onMounted(() => document.addEventListener('keydown', onKeydown))
+onUnmounted(() => document.removeEventListener('keydown', onKeydown))
 </script>

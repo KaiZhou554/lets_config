@@ -4,6 +4,12 @@
       class="bg-white/20 dark:bg-neutral-900/20 w-full h-full ring-1 ring-black/5 dark:ring-white/10 overflow-hidden flex flex-col transition-colors"
     >
       <div class="h-full relative overflow-hidden">
+        <!-- Backdrop overlay — closes sidebar when clicking outside -->
+        <div
+          v-if="appStore.sidebarOpen"
+          class="absolute inset-0 z-[5]"
+          @click="appStore.toggleSidebar()"
+        />
         <Sidebar :sidebar-open="appStore.sidebarOpen" />
 
         <!-- Page content area with Naive UI scrollbar -->

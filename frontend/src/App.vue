@@ -1,6 +1,6 @@
 <template>
   <n-config-provider :theme-overrides="themeOverrides">
-    <div class="h-screen flex flex-col">
+    <div class="h-screen flex flex-col bg-white/20 dark:bg-neutral-900/20">
       <!-- TitleBar — fixed above all page transitions -->
       <TitleBar
         :show-sidebar-toggle="showSidebarToggle"
