@@ -33,26 +33,34 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { NConfigProvider } from 'naive-ui'
-import {
-  WindowMinimise,
-  WindowMaximise,
-  WindowUnmaximise,
-  WindowIsMaximised,
-  Quit,
-} from '../wailsjs/runtime/runtime'
+import { WindowMinimise, Quit } from '../wailsjs/runtime/runtime'
 import AppIcon from '@/assets/appicon_128px.webp'
 import TitleBar from '@/components/TitleBar.vue'
 import { useAppStore } from '@/stores/appStore'
 import { usePrivacyConfigStore } from '@/stores/privacyConfigStore'
+import { useWindowState } from '@/composables/useWindowState'
 
 const router = useRouter()
 const route = useRoute()
 const { t, locale } = useI18n()
 const appStore = useAppStore()
+
+// ── Window state synchronisation ──
+const {
+  isMaximized,
+  startWindowStateSync,
+  stopWindowStateSync,
+  maximize,
+  unmaximize,
+} = useWindowState()
+
+// Keep the store in sync with the composable's reactive ref.
+// TitleBar reads appStore.isMaximized via :is-maximized prop.
+watch(isMaximized, (val) => appStore.setMaximized(val))
 
 /**
  * Global Naive UI theme overrides.
@@ -83,13 +91,11 @@ function handleBack() {
 function handleMinimize() {
   WindowMinimise()
 }
-function handleMaximize() {
+async function handleMaximize() {
   if (appStore.isMaximized) {
-    WindowUnmaximise()
-    appStore.setMaximized(false)
+    await unmaximize()
   } else {
-    WindowMaximise()
-    appStore.setMaximized(true)
+    await maximize()
   }
 }
 function handleClose() {
@@ -145,7 +151,8 @@ watch(() => privacyStore.optionValues, schedulePrivacySave, { deep: true })
 watch(() => privacyStore.optionDisplay, schedulePrivacySave, { deep: true })
 
 onMounted(async () => {
-  appStore.setMaximized(await WindowIsMaximised())
+  // Start polling window state (also does an immediate first sync)
+  startWindowStateSync()
 
   // Load persisted config from Go backend
   await appStore.loadConfig()
@@ -159,5 +166,9 @@ onMounted(async () => {
   } else {
     router.replace('/main/home')
   }
+})
+
+onUnmounted(() => {
+  stopWindowStateSync()
 })
 </script>

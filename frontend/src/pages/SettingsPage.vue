@@ -52,9 +52,6 @@
                  text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50
                  rounded-lg px-3 py-2 transition-colors">
           <div class="flex items-center gap-3">
-            <Icon class="text-gray-500 dark:text-gray-400">
-              <ShieldKeyhole20Regular />
-            </Icon>
             <span>{{ t('settings.managePermissions') }}</span>
           </div>
           <Icon class="text-gray-400">
@@ -71,7 +68,6 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { NSwitch, NSelect } from 'naive-ui'
 import { Icon } from '@vicons/utils'
-import ShieldKeyhole20Regular from '@vicons/fluent/es/ShieldKeyhole20Regular'
 import ChevronRight20Regular from '@vicons/fluent/es/ChevronRight20Regular'
 import { useAppStore } from '@/stores/appStore'
 
