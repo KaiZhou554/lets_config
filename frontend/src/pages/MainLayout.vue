@@ -1,7 +1,7 @@
 <template>
   <div class="h-full">
     <div
-      class="bg-white/20 dark:bg-neutral-900/20 w-full h-full ring-1 ring-black/5 dark:ring-white/10 overflow-hidden flex flex-col transition-colors"
+      class="w-full h-full ring-1 ring-black/5 dark:ring-white/10 overflow-hidden flex flex-col transition-colors"
     >
       <div class="h-full relative overflow-hidden">
         <!-- Backdrop overlay — closes sidebar when clicking outside -->
