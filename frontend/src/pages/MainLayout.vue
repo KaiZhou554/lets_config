@@ -21,10 +21,7 @@
 
         <!-- Page content area with Naive UI scrollbar -->
         <div
-          :class="[
-            'h-full transition-all duration-300 bg-gray-50 dark:bg-gray-900 rounded-tl-xl',
-            appStore.sidebarOpen ? 'ml-48' : 'ml-12',
-          ]"
+          class="h-full ml-12 bg-gray-50 dark:bg-gray-900 rounded-tl-xl"
         >
           <n-scrollbar>
             <router-view />
