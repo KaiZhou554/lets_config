@@ -34,14 +34,14 @@
       <button
         @click="$emit('minimize')"
         class="dark:text-white w-12 h-12 flex items-center justify-center hover:bg-neutral-400/50 dark:hover:bg-neutral-900/50 active:bg-neutral-400 dark:active:bg-neutral-900 text-sm transition-colors"
-        title="最小化"
+        :title="t('titlebar.minimize')"
       >
         <Icon><Subtract48Regular /></Icon>
       </button>
       <button
         @click="$emit('maximize')"
         class="dark:text-white w-12 h-12 flex items-center justify-center hover:bg-neutral-400/50 dark:hover:bg-neutral-900/50 active:bg-neutral-400 dark:active:bg-neutral-900 text-sm transition-colors"
-        title="最大化"
+        :title="t('titlebar.maximize')"
       >
         <Icon>
           <component :is="isMaximized ? SquareMultiple24Regular : Tab28Regular" />
@@ -50,7 +50,7 @@
       <button
         @click="$emit('close')"
         class="dark:text-white w-12 h-12 flex items-center justify-center hover:bg-red-500 active:hover:bg-red-500/50 hover:text-white text-sm transition-colors"
-        title="关闭"
+        :title="t('titlebar.close')"
       >
         <Icon><Dismiss48Regular /></Icon>
       </button>
@@ -59,6 +59,7 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { Icon } from '@vicons/utils'
 import Dismiss48Regular from '@vicons/fluent/es/Dismiss48Regular'
 import Tab28Regular from '@vicons/fluent/es/Tab28Regular'
@@ -66,6 +67,8 @@ import Subtract48Regular from '@vicons/fluent/es/Subtract48Regular'
 import TextAlignJustify24Regular from '@vicons/fluent/es/TextAlignJustify24Regular'
 import SquareMultiple24Regular from '@vicons/fluent/es/SquareMultiple24Regular'
 import ArrowLeft24Regular from '@vicons/fluent/es/ArrowLeft24Regular'
+
+const { t } = useI18n()
 
 withDefaults(defineProps<{
   iconAnimating: boolean

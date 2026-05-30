@@ -6,9 +6,9 @@ export default {
   },
   welcome: {
     title: '欢迎',
-    slogan: '让你的配置更简单，更高效。',
+    slogan: '开始设置你的体验。',
     selectLanguage: '选择语言',
-    getStarted: '开始使用',
+    getStarted: '继续',
   },
   setup: {
     continueSetup: '继续设置',
@@ -36,6 +36,11 @@ export default {
     autoLaunch: '开机自动启动',
     notifications: '启用通知',
     minimizeToTray: '关闭时最小化到托盘',
+  },
+  titlebar: {
+    minimize: '最小化',
+    maximize: '最大化',
+    close: '关闭',
   },
   privacy: {
     sections: {

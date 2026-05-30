@@ -14,7 +14,7 @@
            transition-transform duration-[0.02s]"
   >
     <slot />
-    <span class="hover-effect absolute inset-0 flex items-center justify-center z-[1]">
+    <span class="hover-effect absolute inset-0 flex items-center justify-center z-1">
       <span
         class="block rounded-[40rem] w-40 h-40 opacity-50 blur-[20px]
                animate-[spin_3s_linear_infinite]

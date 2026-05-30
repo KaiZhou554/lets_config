@@ -37,6 +37,11 @@ export default {
     notifications: 'Enable notifications',
     minimizeToTray: 'Minimize to tray on close',
   },
+  titlebar: {
+    minimize: 'Minimize',
+    maximize: 'Maximize',
+    close: 'Close',
+  },
   privacy: {
     sections: {
       storage: 'Storage',
