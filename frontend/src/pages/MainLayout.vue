@@ -26,12 +26,10 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
 import { NScrollbar } from 'naive-ui'
 import Sidebar from '@/components/Sidebar.vue'
 import { useAppStore } from '@/stores/appStore'
 
-const { t } = useI18n()
 const appStore = useAppStore()
 const router = useRouter()
 
