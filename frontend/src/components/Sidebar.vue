@@ -10,6 +10,7 @@
     ]"
   >
     <div class="relative h-full pt-2 px-2 flex flex-col items-start gap-1">
+      <!-- Active indicator -->
       <span
         v-if="indicatorHeight !== '0px'"
         :style="{
@@ -19,21 +20,22 @@
         }"
         class="sidebar-indicator bg-taffy-400 dark:bg-taffy-200 transition-colors"
       />
+
       <button
-        v-for="(cat, idx) in categories"
-        :key="cat.id"
-        :ref="el => setButtonRef(el, idx)"
-        @click="selectCategory(cat.id)"
+        v-for="item in navItems"
+        :key="item.route"
+        :ref="el => setButtonRef(el as HTMLElement | null, item.route)"
+        @click="navigate(item.route)"
         :class="[
           'w-full flex items-center rounded-sm text-sm transition-colors',
-          activeCategory === cat.id
+          isActive(item.route)
             ? 'bg-neutral-200/60 dark:bg-neutral-700/60 text-neutral-900 dark:text-white'
             : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800',
         ]"
       >
         <span class="text-lg shrink-0">
           <Icon class="mt-2 ml-1.5" size="20">
-            <component :is="cat.icon" />
+            <component :is="item.icon" />
           </Icon>
         </span>
         <span
@@ -41,43 +43,73 @@
             'text-sm ml-2 whitespace-nowrap overflow-hidden',
             sidebarOpen ? 'block' : 'hidden',
           ]"
-        >{{ cat.name }}</span>
+        >{{ item.label }}</span>
       </button>
     </div>
   </aside>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, onMounted } from 'vue'
+import { ref, watch, nextTick, onMounted, computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { Icon } from '@vicons/utils'
-import type { Category } from '../types'
+import Home20Regular from '@vicons/fluent/es/Home20Regular'
+import Settings20Regular from '@vicons/fluent/es/Settings20Regular'
+
+const { t } = useI18n()
+const router = useRouter()
+const route = useRoute()
 
 const props = defineProps<{
-  categories: Category[]
-  activeCategory: string
   sidebarOpen: boolean
 }>()
 
-const emit = defineEmits<{
-  'update:activeCategory': [value: string]
-}>()
+interface NavItem {
+  route: string
+  label: string
+  icon: typeof Home20Regular
+}
 
+const navItems = computed<NavItem[]>(() => [
+  {
+    route: '/main/home',
+    label: t('sidebar.home'),
+    icon: Home20Regular,
+  },
+  {
+    route: '/main/settings',
+    label: t('sidebar.settings'),
+    icon: Settings20Regular,
+  },
+])
+
+function isActive(routePath: string): boolean {
+  return route.path === routePath || route.path.startsWith(routePath + '/')
+}
+
+function navigate(routePath: string) {
+  router.push(routePath)
+}
+
+// ---- Indicator animation (preserved from original) ----
 const sidebarRef = ref<HTMLElement | null>(null)
-const buttonRefs = ref<Array<HTMLElement | null>>([])
+const buttonRefs = ref<Record<string, HTMLElement | null>>({})
 const indicatorTop = ref<string>('0px')
 const indicatorHeight = ref<string>('0px')
 const indicatorScale = ref<number>(1)
 
-const setButtonRef = (el: unknown, idx: number) => {
-  buttonRefs.value[idx] = el as HTMLElement | null
+const setButtonRef = (el: HTMLElement | null, routeName: string) => {
+  buttonRefs.value[routeName] = el
 }
 
 const updateIndicator = async () => {
   await nextTick()
 
   const sidebar = sidebarRef.value
-  const activeIndex = props.categories.findIndex(c => c.id === props.activeCategory)
-  const targetButton = buttonRefs.value[activeIndex]
+  const activeRoute = navItems.value.find(item => isActive(item.route))
+  if (!activeRoute) return
+  const targetButton = buttonRefs.value[activeRoute.route]
 
   if (!sidebar || !targetButton) return
 
@@ -101,11 +133,7 @@ const updateIndicator = async () => {
   }, 240)
 }
 
-const selectCategory = (id: string) => {
-  emit('update:activeCategory', id)
-}
-
-watch(() => props.activeCategory, updateIndicator)
+watch(() => route.path, updateIndicator)
 onMounted(() => {
   updateIndicator()
 })

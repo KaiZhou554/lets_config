@@ -4,12 +4,38 @@ export default {
     defaultAppName: "Let's config",
     placeholderAppName: '[App Name]',
   },
+  welcome: {
+    title: 'Welcome',
+    slogan: 'Configure smarter, work faster.',
+    selectLanguage: 'Select Language',
+    getStarted: 'Get Started',
+  },
   setup: {
     continueSetup: 'Continue Setup',
     finish: 'Finish',
     introTitle: 'Choose how you want {appName} to work',
     introDefault: 'Some items are enabled by default to ensure {appName} runs properly.',
     introChangeLater: 'You can change these options anytime in Settings.',
+  },
+  sidebar: {
+    home: 'Home',
+    settings: 'Settings',
+  },
+  home: {
+    title: 'Home',
+    placeholder: 'This will be your dashboard, featuring common actions and quick shortcuts.',
+  },
+  settings: {
+    title: 'Settings',
+    language: 'Language',
+    displayLanguage: 'Display Language',
+    general: 'General',
+    systemPermissions: 'System Permissions',
+    managePermissions: 'Manage Permissions',
+    backToSettings: 'Back to Settings',
+    autoLaunch: 'Launch on startup',
+    notifications: 'Enable notifications',
+    minimizeToTray: 'Minimize to tray on close',
   },
   privacy: {
     sections: {

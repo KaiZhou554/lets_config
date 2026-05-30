@@ -1,6 +1,8 @@
 <template>
   <header style="--wails-draggable:drag" class="h-12 flex items-center pl-2 shrink-0 select-none">
+    <!-- Sidebar toggle button — only shown in main layout (not during onboarding) -->
     <button
+      v-if="showSidebarToggle"
       style="--wails-draggable:no-drag"
       @click="$emit('toggleSidebar')"
       class="dark:text-white w-8 h-8 flex items-center justify-center rounded-sm hover:bg-neutral-400/50 dark:hover:bg-neutral-900/50 active:bg-neutral-400 dark:active:bg-neutral-900 text-lg leading-none transition-colors"
@@ -9,8 +11,12 @@
         <TextAlignJustify24Regular />
       </Icon>
     </button>
+
+    <!-- Placeholder during onboarding -->
+    <div v-else class="w-8 h-8" />
+
     <img :src="appIcon" class="h-5 w-5 ml-4" alt="" />
-    <span class="ml-3 text-sm font-medium text-neutral-700 dark:text-neutral-200">快捷短语</span>
+    <span class="ml-3 text-sm font-medium text-neutral-700 dark:text-neutral-200">{{ appName }}</span>
 
     <div style="--wails-draggable:no-drag" class="ml-auto flex items-center gap-1">
       <button
@@ -41,20 +47,23 @@
 </template>
 
 <script setup lang="ts">
-import {
-  Dismiss48Regular,
-  Tab28Regular,
-  Subtract48Regular,
-  TextAlignJustify24Regular,
-  SquareMultiple24Regular,
-} from '@vicons/fluent'
 import { Icon } from '@vicons/utils'
+import Dismiss48Regular from '@vicons/fluent/es/Dismiss48Regular'
+import Tab28Regular from '@vicons/fluent/es/Tab28Regular'
+import Subtract48Regular from '@vicons/fluent/es/Subtract48Regular'
+import TextAlignJustify24Regular from '@vicons/fluent/es/TextAlignJustify24Regular'
+import SquareMultiple24Regular from '@vicons/fluent/es/SquareMultiple24Regular'
 
-defineProps<{
+withDefaults(defineProps<{
   iconAnimating: boolean
   isMaximized: boolean
   appIcon: string
-}>()
+  appName?: string
+  showSidebarToggle?: boolean
+}>(), {
+  appName: 'App',
+  showSidebarToggle: false,
+})
 
 defineEmits<{
   toggleSidebar: []

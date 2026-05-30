@@ -4,12 +4,38 @@ export default {
     defaultAppName: "Let's config",
     placeholderAppName: '[软件名]',
   },
+  welcome: {
+    title: '欢迎',
+    slogan: '让你的配置更简单，更高效。',
+    selectLanguage: '选择语言',
+    getStarted: '开始使用',
+  },
   setup: {
     continueSetup: '继续设置',
     finish: '完成',
     introTitle: '选择你希望 {appName} 如何工作',
     introDefault: '部分项目已默认启用，以确保 {appName} 正常运行。',
     introChangeLater: '你随时可以在"设置"中更改这些选项。',
+  },
+  sidebar: {
+    home: '主页',
+    settings: '设置',
+  },
+  home: {
+    title: '主页',
+    placeholder: '这里将是你的主面板，未来会展示常用操作和快捷入口。',
+  },
+  settings: {
+    title: '设置',
+    language: '语言',
+    displayLanguage: '显示语言',
+    general: '通用',
+    systemPermissions: '系统权限管理',
+    managePermissions: '管理权限',
+    backToSettings: '返回设置',
+    autoLaunch: '开机自动启动',
+    notifications: '启用通知',
+    minimizeToTray: '关闭时最小化到托盘',
   },
   privacy: {
     sections: {

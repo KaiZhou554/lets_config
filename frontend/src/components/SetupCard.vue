@@ -9,6 +9,7 @@
         pointer-events-none bg-linear-to-b from-white via-white to-transparent dark:from-gray-800 dark:via-gray-800 dark:to-transparent">
         <h1 class="text-xl font-medium text-gray-800 dark:text-gray-100">{{ t('setup.continueSetup') }}</h1>
         <button
+          @click="$emit('finish')"
           class="setup-btn pointer-events-auto cursor-pointer px-6 py-2 text-white rounded-xl font-medium transition-all flex items-center gap-3 outline-none focus-visible:outline-none">
           <span>{{ t('setup.finish') }}</span>
           <span class="flex items-center gap-1 text-xs opacity-75">
@@ -64,6 +65,8 @@ defineProps({
     default: true,
   },
 })
+
+defineEmits(['finish'])
 </script>
 
 <style scoped>
