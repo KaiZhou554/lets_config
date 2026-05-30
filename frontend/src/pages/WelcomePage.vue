@@ -48,9 +48,10 @@
         <!-- Get started button -->
         <button
           @click="goToSetup"
-          class="setup-btn cursor-pointer px-12 py-3.5 text-white rounded-xl font-semibold text-base
+          class="cursor-pointer px-12 py-3.5 text-white rounded-xl font-semibold text-base
                  transition-all outline-none focus-visible:ring-2 focus-visible:ring-offset-2
-                 shadow-lg hover:shadow-xl active:scale-95"
+                 shadow-lg hover:shadow-xl active:scale-95
+                 bg-taffy-400 hover:bg-taffy-500 active:bg-taffy-600"
         >
           {{ t('welcome.getStarted') }}
         </button>
@@ -112,24 +113,4 @@ onMounted(async () => {
 })
 </script>
 
-<style scoped>
-:root {
-  --theme-color: oklch(0.716 0.191 2.477);
-}
 
-.setup-btn {
-  background-color: var(--theme-color);
-}
-
-@media (prefers-color-scheme: light) {
-  .setup-btn:hover {
-    background-color: color-mix(in oklch, var(--theme-color), black 15%);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .setup-btn:hover {
-    background-color: color-mix(in oklch, var(--theme-color), white 15%);
-  }
-}
-</style>
