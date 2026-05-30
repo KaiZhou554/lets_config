@@ -9,6 +9,7 @@
         :icon-animating="appStore.sidebarAnimating"
         :is-maximized="appStore.isMaximized"
         :app-icon="AppIcon"
+        :app-name="t('app.defaultAppName')"
         @toggle-sidebar="appStore.toggleSidebar()"
         @minimize="handleMinimize"
         @maximize="handleMaximize"
@@ -34,6 +35,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import {
   WindowMinimise,
   WindowMaximise,
@@ -46,6 +48,7 @@ import TitleBar from '@/components/TitleBar.vue'
 import Sidebar from '@/components/Sidebar.vue'
 import { useAppStore } from '@/stores/appStore'
 
+const { t } = useI18n()
 const appStore = useAppStore()
 
 const handleMinimize = () => {

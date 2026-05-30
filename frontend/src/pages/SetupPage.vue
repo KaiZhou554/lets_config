@@ -12,19 +12,17 @@
     />
 
     <div class="flex-1">
-      <n-config-provider :theme-overrides="themeOverrides">
-        <SetupCard
-          :app-name="t('app.defaultAppName')"
-          theme-color="oklch(0.716 0.191 2.477)"
-          @finish="handleFinish"
-        >
-          <PrivacySettings :app-name="t('app.placeholderAppName')" />
+      <SetupCard
+        :app-name="t('app.defaultAppName')"
+        theme-color="oklch(0.716 0.191 2.477)"
+        @finish="handleFinish"
+      >
+        <PrivacySettings :app-name="t('app.placeholderAppName')" />
 
-          <p class="text-gray-500/40 dark:text-gray-400/40 mt-6 text-right text-sm">
-            {{ t('app.versionPrefix') }}{{ store.meta.displayVersion }}
-          </p>
-        </SetupCard>
-      </n-config-provider>
+        <p class="text-gray-500/40 dark:text-gray-400/40 mt-6 text-right text-sm">
+          {{ t('app.versionPrefix') }}{{ store.meta.displayVersion }}
+        </p>
+      </SetupCard>
     </div>
   </div>
 </template>
@@ -33,7 +31,6 @@
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { NConfigProvider } from 'naive-ui'
 import {
   WindowMinimise,
   WindowMaximise,
@@ -74,21 +71,4 @@ const handleClose = () => Quit()
 onMounted(async () => {
   appStore.setMaximized(await WindowIsMaximised())
 })
-
-/**
- * js 文件下使用这个做类型提示
- * @type import('naive-ui').GlobalThemeOverrides
- */
-const themeOverrides = {
-  Switch: {
-    loadingColor: '#ce597eFF',
-    railColorActive: '#ce597eFF',
-  },
-  common: {
-    primaryColor: '#ce597eFF',
-    primaryColorHover: '#da6a8cFF',
-    primaryColorPressed: '#9e4260FF',
-    primaryColorSuppl: '#da6a8cFF',
-  },
-}
 </script>
