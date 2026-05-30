@@ -9,17 +9,27 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 	"github.com/wailsapp/wails/v2/pkg/options/windows"
+
+	"lets_config/config"
 )
 
 //go:embed all:frontend/dist
 var assets embed.FS
 
 func main() {
+	// Config file lives alongside the WebView user data directory
+	configPath := filepath.Join(os.Getenv("APPDATA"), "unieditdept", "lets_config", "config.toml")
+	cfgManager, err := config.NewManager(configPath)
+	if err != nil {
+		println("Error: failed to init config manager:", err.Error())
+		os.Exit(1)
+	}
+
 	// Create an instance of the app structure
-	app := NewApp()
+	app := NewApp(cfgManager)
 
 	// Create application with options
-	err := wails.Run(&options.App{
+	err = wails.Run(&options.App{
 		Title:     "Let`s config",
 		Width:     1280,
 		Height:    720,

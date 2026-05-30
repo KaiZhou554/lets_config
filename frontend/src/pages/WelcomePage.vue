@@ -61,6 +61,7 @@ function selectLanguage(value: string) {
   const lang = value as 'zh-CN' | 'en'
   appStore.setLanguage(lang)
   locale.value = lang
+  appStore.saveConfig()
 }
 
 function goToSetup() {

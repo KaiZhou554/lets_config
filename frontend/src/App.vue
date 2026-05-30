@@ -16,13 +16,17 @@
         @close="handleClose"
       />
 
-      <!-- Page content area with transitions -->
-      <div class="flex-1 overflow-hidden">
+      <!-- Page content area — hidden until config is loaded to avoid flash -->
+      <div v-if="appStore.configLoaded" class="flex-1 overflow-hidden">
         <router-view v-slot="{ Component, route }">
           <transition :name="transitionName" mode="out-in">
             <component :is="Component" :key="route.matched[0]?.path ?? route.path" />
           </transition>
         </router-view>
+      </div>
+      <!-- Loading placeholder while config loads -->
+      <div v-else class="flex-1 overflow-hidden flex items-center justify-center">
+        <div class="w-6 h-6 border-2 border-gray-300 border-t-pink-400 rounded-full animate-spin" />
       </div>
     </div>
   </n-config-provider>
@@ -43,10 +47,11 @@ import {
 import AppIcon from '@/assets/appicon_128px.webp'
 import TitleBar from '@/components/TitleBar.vue'
 import { useAppStore } from '@/stores/appStore'
+import { usePrivacyConfigStore } from '@/stores/privacyConfigStore'
 
 const router = useRouter()
 const route = useRoute()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const appStore = useAppStore()
 
 /**
@@ -113,7 +118,46 @@ watch(
   },
 )
 
+const privacyStore = usePrivacyConfigStore()
+
+// When isFirstLaunch flips from default (true) to loaded (false), redirect to home.
+// Using a watch avoids the async-timing issues of router.replace inside onMounted.
+watch(
+  () => appStore.isFirstLaunch,
+  (val) => {
+    if (!val) {
+      const p = route.path
+      if (p === '/welcome' || p === '/setup') {
+        router.replace('/main/home')
+      }
+    }
+  },
+)
+
+// Auto-save config when privacy settings change (debounced 400ms)
+let privacySaveTimer: ReturnType<typeof setTimeout> | null = null
+function schedulePrivacySave() {
+  if (!appStore.configLoaded) return
+  if (privacySaveTimer) clearTimeout(privacySaveTimer)
+  privacySaveTimer = setTimeout(() => appStore.saveConfig(), 400)
+}
+watch(() => privacyStore.optionValues, schedulePrivacySave, { deep: true })
+watch(() => privacyStore.optionDisplay, schedulePrivacySave, { deep: true })
+
 onMounted(async () => {
   appStore.setMaximized(await WindowIsMaximised())
+
+  // Load persisted config from Go backend
+  await appStore.loadConfig()
+
+  // Sync i18n locale with config language
+  locale.value = appStore.currentLanguage
+
+  // Navigate to correct initial page (router-view is hidden until now, so no flash)
+  if (appStore.isFirstLaunch) {
+    if (route.path !== '/welcome') router.replace('/welcome')
+  } else {
+    router.replace('/main/home')
+  }
 })
 </script>

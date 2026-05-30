@@ -69,6 +69,11 @@ export function setupRouterGuards(pinia: Pinia) {
   router.beforeEach((to, _from) => {
     const appStore = useAppStore(pinia)
 
+    // Allow all routes while config is still loading (App.vue will redirect after load)
+    if (!appStore.configLoaded) {
+      return true
+    }
+
     // If still in first-launch onboarding, restrict to onboarding routes
     if (appStore.isFirstLaunch) {
       if (to.path === '/welcome' || to.path === '/setup') {

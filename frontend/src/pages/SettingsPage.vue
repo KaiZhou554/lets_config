@@ -20,16 +20,24 @@
       </div>
     </section>
 
-    <!-- Placeholder settings -->
+    <!-- General settings -->
     <section class="mb-8">
       <h2 class="text-lg font-medium text-gray-800 dark:text-gray-100 mb-3">
         {{ t('settings.general') }}
       </h2>
       <div
         class="bg-white dark:bg-gray-800 rounded-xl ring-1 ring-black/5 dark:ring-white/10 divide-y divide-gray-100 dark:divide-gray-700/50">
-        <div v-for="item in placeholderItems" :key="item.key" class="flex items-center justify-between px-4 py-3">
-          <span class="text-gray-700 dark:text-gray-200">{{ item.label }}</span>
-          <n-switch :value="item.enabled" />
+        <div class="flex items-center justify-between px-4 py-3">
+          <span class="text-gray-700 dark:text-gray-200">{{ t('settings.autoLaunch') }}</span>
+          <n-switch :value="appStore.generalSettings.autoStart" @update:value="val => { appStore.generalSettings.autoStart = val; appStore.saveConfig() }" />
+        </div>
+        <div class="flex items-center justify-between px-4 py-3">
+          <span class="text-gray-700 dark:text-gray-200">{{ t('settings.notifications') }}</span>
+          <n-switch :value="appStore.generalSettings.notifications" @update:value="val => { appStore.generalSettings.notifications = val; appStore.saveConfig() }" />
+        </div>
+        <div class="flex items-center justify-between px-4 py-3">
+          <span class="text-gray-700 dark:text-gray-200">{{ t('settings.minimizeToTray') }}</span>
+          <n-switch :value="appStore.generalSettings.minimizeToTray" @update:value="val => { appStore.generalSettings.minimizeToTray = val; appStore.saveConfig() }" />
         </div>
       </div>
     </section>
@@ -59,7 +67,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { NSwitch, NSelect } from 'naive-ui'
@@ -81,16 +88,10 @@ function switchLanguage(value: string) {
   const lang = value as 'zh-CN' | 'en'
   appStore.setLanguage(lang)
   locale.value = lang
+  appStore.saveConfig()
 }
 
 function goToPrivacy() {
   router.push({ name: 'settings-privacy' })
 }
-
-// Computed so labels react to locale changes immediately
-const placeholderItems = computed(() => [
-  { key: 'autoLaunch', label: t('settings.autoLaunch'), enabled: false },
-  { key: 'notifications', label: t('settings.notifications'), enabled: true },
-  { key: 'minimizeToTray', label: t('settings.minimizeToTray'), enabled: true },
-])
 </script>
