@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Sticky header — CSS scroll-driven animation, transparent bg -->
-    <div class="sticky-header sticky top-0 z-2 pt-10 pb-4 px-8
+    <div class="sticky-header sticky top-0 z-2 pt-10 pb-4 px-8 rounded-tl-md
          bg-linear-to-b from-gray-50 from-60% to-transparent
          dark:from-gray-900 dark:to-transparent">
       <!-- Back button -->

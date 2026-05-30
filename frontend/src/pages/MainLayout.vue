@@ -21,7 +21,7 @@
 
         <!-- Page content area with Naive UI scrollbar -->
         <div
-          class="h-full ml-12 bg-gray-50 dark:bg-gray-900 rounded-tl-xl"
+          class="h-full ml-12 bg-gray-50 dark:bg-gray-900 rounded-tl-md"
         >
           <n-scrollbar>
             <router-view />
