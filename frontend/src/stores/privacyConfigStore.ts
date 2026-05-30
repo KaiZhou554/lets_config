@@ -1,4 +1,4 @@
-// src/stores/privacyConfigStore.js
+// src/stores/privacyConfigStore.ts
 import { defineStore } from 'pinia'
 
 // 首次启动隐私权限配置
@@ -112,19 +112,19 @@ export const usePrivacyConfigStore = defineStore('privacyConfig', {
   },
 
   actions: {
-    updateOptionValue(key, value) {
-      if (this.optionValues.hasOwnProperty(key)) {
-        this.optionValues[key] = value
+    updateOptionValue(key: string, value: boolean) {
+      if (key in this.optionValues) {
+        this.optionValues[key as keyof typeof this.optionValues] = value
       }
     },
 
-    updateOptionDisplay(key, isShow) {
-      if (this.optionDisplay.hasOwnProperty(key)) {
-        this.optionDisplay[key] = isShow
+    updateOptionDisplay(key: string, isShow: boolean) {
+      if (key in this.optionDisplay) {
+        this.optionDisplay[key as keyof typeof this.optionDisplay] = isShow
       }
     },
 
-    updateMeta(metaData) {
+    updateMeta(metaData: { displayVersion?: number; updateTime?: string; author?: string; desc?: string }) {
       this.meta = { ...this.meta, ...metaData }
     },
 
