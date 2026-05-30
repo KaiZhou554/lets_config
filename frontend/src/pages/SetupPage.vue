@@ -2,10 +2,12 @@
   <div class="h-screen flex flex-col">
     <TitleBar
       :show-sidebar-toggle="false"
+      :back-button="true"
       :icon-animating="false"
       :is-maximized="appStore.isMaximized"
       :app-icon="AppIcon"
       :app-name="t('app.defaultAppName')"
+      @back="goBack"
       @minimize="handleMinimize"
       @maximize="handleMaximize"
       @close="handleClose"
@@ -49,6 +51,10 @@ const { t } = useI18n()
 const router = useRouter()
 const store = usePrivacyConfigStore()
 const appStore = useAppStore()
+
+function goBack() {
+  router.push('/welcome')
+}
 
 function handleFinish() {
   appStore.completeOnboarding()

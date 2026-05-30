@@ -45,15 +45,9 @@
         </div>
 
         <!-- Get started button -->
-        <button
-          @click="goToSetup"
-          class="cursor-pointer px-12 py-3.5 text-white rounded-xl font-semibold text-base
-                 transition-all outline-none focus-visible:ring-2 focus-visible:ring-offset-2
-                 shadow-lg hover:shadow-xl active:scale-95
-                 bg-taffy-400 hover:bg-taffy-500 active:bg-taffy-600"
-        >
+        <BubbleButton @click="goToSetup">
           {{ t('welcome.getStarted') }}
-        </button>
+        </BubbleButton>
       </div>
     </div>
   </div>
@@ -74,6 +68,7 @@ import {
 import { useAppStore } from '@/stores/appStore'
 import AppIcon from '@/assets/appicon_128px.webp'
 import TitleBar from '@/components/TitleBar.vue'
+import BubbleButton from '@/components/BubbleButton.vue'
 
 const { t, locale } = useI18n()
 const router = useRouter()

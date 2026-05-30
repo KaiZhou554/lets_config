@@ -1,6 +1,6 @@
 <template>
   <header style="--wails-draggable:drag" class="h-12 flex items-center pl-2 shrink-0 select-none">
-    <!-- Sidebar toggle button — only shown in main layout (not during onboarding) -->
+    <!-- Sidebar toggle button — main layout -->
     <button
       v-if="showSidebarToggle"
       style="--wails-draggable:no-drag"
@@ -12,7 +12,19 @@
       </Icon>
     </button>
 
-    <!-- Placeholder during onboarding -->
+    <!-- Back button — setup/onboarding pages -->
+    <button
+      v-else-if="backButton"
+      style="--wails-draggable:no-drag"
+      @click="$emit('back')"
+      class="dark:text-white w-8 h-8 flex items-center justify-center rounded-sm hover:bg-neutral-400/50 dark:hover:bg-neutral-900/50 active:bg-neutral-400 dark:active:bg-neutral-900 text-lg leading-none transition-colors"
+    >
+      <Icon :class="{ 'animate-squeeze': iconAnimating }">
+        <ArrowLeft24Regular />
+      </Icon>
+    </button>
+
+    <!-- Placeholder during welcome -->
     <div v-else class="w-8 h-8" />
 
     <img :src="appIcon" class="h-5 w-5 ml-4" alt="" />
@@ -53,6 +65,7 @@ import Tab28Regular from '@vicons/fluent/es/Tab28Regular'
 import Subtract48Regular from '@vicons/fluent/es/Subtract48Regular'
 import TextAlignJustify24Regular from '@vicons/fluent/es/TextAlignJustify24Regular'
 import SquareMultiple24Regular from '@vicons/fluent/es/SquareMultiple24Regular'
+import ArrowLeft24Regular from '@vicons/fluent/es/ArrowLeft24Regular'
 
 withDefaults(defineProps<{
   iconAnimating: boolean
@@ -60,13 +73,16 @@ withDefaults(defineProps<{
   appIcon: string
   appName?: string
   showSidebarToggle?: boolean
+  backButton?: boolean
 }>(), {
   appName: 'App',
   showSidebarToggle: false,
+  backButton: false,
 })
 
 defineEmits<{
   toggleSidebar: []
+  back: []
   minimize: []
   maximize: []
   close: []
