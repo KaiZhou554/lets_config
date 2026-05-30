@@ -1,21 +1,8 @@
 <template>
-  <div class="h-screen">
+  <div class="h-full">
     <div
       class="bg-white/20 dark:bg-neutral-900/20 w-full h-full ring-1 ring-black/5 dark:ring-white/10 overflow-hidden flex flex-col transition-colors"
     >
-      <!-- TitleBar: sidebar toggle shown here (not during onboarding) -->
-      <TitleBar
-        :show-sidebar-toggle="true"
-        :icon-animating="appStore.sidebarAnimating"
-        :is-maximized="appStore.isMaximized"
-        :app-icon="AppIcon"
-        :app-name="t('app.defaultAppName')"
-        @toggle-sidebar="appStore.toggleSidebar()"
-        @minimize="handleMinimize"
-        @maximize="handleMaximize"
-        @close="handleClose"
-      />
-
       <div class="h-full relative overflow-hidden">
         <Sidebar :sidebar-open="appStore.sidebarOpen" />
 
@@ -24,7 +11,11 @@
           class="h-full ml-12 bg-gray-50 dark:bg-gray-900 rounded-tl-md"
         >
           <n-scrollbar>
-            <router-view />
+            <router-view v-slot="{ Component, route }">
+              <transition :name="nestedTransition" mode="out-in">
+                <component :is="Component" :key="route.fullPath" />
+              </transition>
+            </router-view>
           </n-scrollbar>
         </div>
       </div>
@@ -33,43 +24,37 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { NScrollbar } from 'naive-ui'
-import {
-  WindowMinimise,
-  WindowMaximise,
-  WindowUnmaximise,
-  WindowIsMaximised,
-  Quit,
-} from '../../wailsjs/runtime/runtime'
-import AppIcon from '@/assets/appicon_128px.webp'
-import TitleBar from '@/components/TitleBar.vue'
 import Sidebar from '@/components/Sidebar.vue'
 import { useAppStore } from '@/stores/appStore'
 
 const { t } = useI18n()
 const appStore = useAppStore()
+const router = useRouter()
 
-const handleMinimize = () => {
-  WindowMinimise()
+// ── Nested page transition (home ↔ settings ↔ settings-privacy) ──
+const nestedTransition = ref('fade')
+
+/** Route-name → Route-name → CSS transition name */
+const nestedTransitionMap: Record<string, Record<string, string>> = {
+  home:             { settings: 'slide-up' },
+  settings:         { home: 'slide-up', 'settings-privacy': 'slide-left' },
+  'settings-privacy': { settings: 'slide-right' },
 }
 
-const handleMaximize = () => {
-  if (appStore.isMaximized) {
-    WindowUnmaximise()
-    appStore.setMaximized(false)
-  } else {
-    WindowMaximise()
-    appStore.setMaximized(true)
-  }
-}
-
-const handleClose = () => {
-  Quit()
-}
-
-onMounted(async () => {
-  appStore.setMaximized(await WindowIsMaximised())
-})
+watch(
+  () => router.currentRoute.value.name,
+  (to, from) => {
+    const fromName = (from as string | undefined) ?? null
+    const toName = (to as string | undefined) ?? null
+    if (!fromName || !toName) {
+      nestedTransition.value = 'fade'
+      return
+    }
+    nestedTransition.value = nestedTransitionMap[fromName]?.[toName] ?? 'fade'
+  },
+)
 </script>

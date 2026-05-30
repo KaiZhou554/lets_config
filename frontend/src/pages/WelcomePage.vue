@@ -1,17 +1,5 @@
 <template>
-  <div class="h-screen flex flex-col">
-    <TitleBar
-      :show-sidebar-toggle="false"
-      :icon-animating="false"
-      :is-maximized="appStore.isMaximized"
-      :app-icon="AppIcon"
-      :app-name="t('app.defaultAppName')"
-      @minimize="handleMinimize"
-      @maximize="handleMaximize"
-      @close="handleClose"
-    />
-
-    <div class="flex-1 bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
+  <div class="h-full bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
       <div
         class="w-full max-w-lg p-10 text-center"
       >
@@ -50,24 +38,14 @@
         </BubbleButton>
       </div>
     </div>
-  </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { NSelect } from 'naive-ui'
-import {
-  WindowMinimise,
-  WindowMaximise,
-  WindowUnmaximise,
-  WindowIsMaximised,
-  Quit,
-} from '../../wailsjs/runtime/runtime'
 import { useAppStore } from '@/stores/appStore'
 import AppIcon from '@/assets/appicon_128px.webp'
-import TitleBar from '@/components/TitleBar.vue'
 import BubbleButton from '@/components/BubbleButton.vue'
 
 const { t, locale } = useI18n()
@@ -88,23 +66,6 @@ function selectLanguage(value: string) {
 function goToSetup() {
   router.push('/setup')
 }
-
-// Window controls
-const handleMinimize = () => WindowMinimise()
-const handleMaximize = () => {
-  if (appStore.isMaximized) {
-    WindowUnmaximise()
-    appStore.setMaximized(false)
-  } else {
-    WindowMaximise()
-    appStore.setMaximized(true)
-  }
-}
-const handleClose = () => Quit()
-
-onMounted(async () => {
-  appStore.setMaximized(await WindowIsMaximised())
-})
 </script>
 
 
