@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+	"time"
 
 	"github.com/BurntSushi/toml"
 )
@@ -38,9 +39,13 @@ func NewManager(configPath string) (*Manager, error) {
 		return m, nil
 	}
 
-	// Load existing config
+	// Load existing config; on any failure, back up the corrupt file
+	// and regenerate with defaults so the app can still start.
 	if err := m.loadUnsafe(); err != nil {
-		return nil, fmt.Errorf("load existing config: %w", err)
+		return m.recoverCorrupted(err)
+	}
+	if err := m.data.Validate(); err != nil {
+		return m.recoverCorrupted(err)
 	}
 
 	return m, nil
@@ -82,6 +87,23 @@ func (m *Manager) Update(fn func(*Config) error) error {
 	}
 
 	return m.saveUnsafe()
+}
+
+// ── Recovery ──
+
+// recoverCorrupted renames the broken config file to a timestamped backup
+// and regenerates it with defaults so the application can still start.
+func (m *Manager) recoverCorrupted(cause error) (*Manager, error) {
+	backup := m.path + ".corrupted." + time.Now().Format("20060102-150405")
+	if err := os.Rename(m.path, backup); err != nil {
+		return nil, fmt.Errorf("config corrupted (%w) and failed to backup bad file: %w", cause, err)
+	}
+	println("Warning: config file was corrupted (" + cause.Error() + "), backed up to " + backup + " and reset to defaults")
+	m.data = DefaultConfig()
+	if err := m.saveUnsafe(); err != nil {
+		return nil, fmt.Errorf("config corrupted (%w), backed up to %s, but failed to write fresh defaults: %w", cause, backup, err)
+	}
+	return m, nil
 }
 
 // ── Internal (caller must hold the appropriate lock) ──

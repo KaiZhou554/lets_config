@@ -50,7 +50,7 @@
       <div class="bg-white dark:bg-gray-800 rounded-xl ring-1 ring-black/5 dark:ring-white/10 p-4">
         <button @click="goToPrivacy" class="w-full flex items-center justify-between text-left
                  text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50
-                 rounded-lg px-3 py-2 transition-colors">
+                 rounded-full px-3 py-2 transition-colors">
           <div class="flex items-center gap-3">
             <span>{{ t('settings.managePermissions') }}</span>
           </div>

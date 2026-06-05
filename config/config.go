@@ -1,5 +1,7 @@
 package config
 
+import "fmt"
+
 // Config is the root configuration structure.
 // All tag names use camelCase to match the frontend store keys directly —
 // no conversion needed anywhere in the chain.
@@ -84,6 +86,21 @@ type PrivacyMeta struct {
 }
 
 // ── Defaults ──
+
+// Validate checks that the loaded configuration has sensible values.
+// Returns nil if the config is valid, or an error describing the first problem found.
+func (c *Config) Validate() error {
+	if c.Version == "" {
+		return fmt.Errorf("version must not be empty")
+	}
+	if c.Language == "" {
+		return fmt.Errorf("language must not be empty")
+	}
+	if c.Privacy.Meta.DisplayVersion < 0 {
+		return fmt.Errorf("privacy.meta.displayVersion must not be negative")
+	}
+	return nil
+}
 
 func DefaultConfig() *Config {
 	return &Config{
