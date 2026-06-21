@@ -1,5 +1,5 @@
 <template>
-  <n-config-provider :theme-overrides="themeOverrides">
+  <n-config-provider :theme-overrides="themeOverrides" :theme="theme">
     <div class="h-screen flex flex-col bg-white/20 dark:bg-neutral-900/20">
       <!-- TitleBar — fixed above all page transitions -->
       <TitleBar
@@ -36,7 +36,7 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { NConfigProvider } from 'naive-ui'
+import { NConfigProvider, darkTheme, useOsTheme  } from 'naive-ui'
 import { WindowMinimise, Quit } from '../wailsjs/runtime/runtime'
 import AppIcon from '@/assets/appicon_128px.webp'
 import TitleBar from '@/components/TitleBar.vue'
@@ -48,6 +48,8 @@ const router = useRouter()
 const route = useRoute()
 const { t, locale } = useI18n()
 const appStore = useAppStore()
+const osTheme = useOsTheme()
+const theme = computed(() => (osTheme.value === 'dark' ? darkTheme : null))
 
 // ── Window state synchronisation ──
 const {
